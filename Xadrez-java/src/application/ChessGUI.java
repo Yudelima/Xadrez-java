@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ChessGUI {
-    private JFrame frame;
+    private TelaInicial frame;
     private JPanel boardPanel;
     private JPanel menuPanel;
     private JButton[][] buttons;
@@ -20,8 +20,9 @@ public class ChessGUI {
     private boolean mustMoveKing = false;
     private java.util.List<Point> highlightedSquares = new java.util.ArrayList<>();
 
-    public ChessGUI() {
-        showMenu();
+    public ChessGUI( TelaInicial frame) {
+     this.frame=frame;
+        startGame();
     }
 
     // Verifica se o jogador atual está em xeque-mate
@@ -37,33 +38,6 @@ public class ChessGUI {
             }
         }
     }
-
-    private void showMenu() {
-        frame = new JFrame("Xadrez - Menu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.setLocationRelativeTo(null);
-        menuPanel = new JPanel();
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        JLabel title = new JLabel("Bem-vindo ao Xadrez!");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
-        JButton startButton = new JButton("Iniciar Jogo");
-        startButton.setFont(new Font("Segoe UI Symbol", Font.BOLD, 32));
-        startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        startButton.addActionListener(e -> {
-            frame.getContentPane().removeAll();
-            startGame();
-        });
-        menuPanel.add(Box.createVerticalGlue());
-        menuPanel.add(title);
-        menuPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        menuPanel.add(startButton);
-        menuPanel.add(Box.createVerticalGlue());
-        frame.setContentPane(menuPanel);
-        frame.setVisible(true);
-    }
-
     private void startGame() {
 
         chessMatch = new ChessMatch();
@@ -180,15 +154,20 @@ public class ChessGUI {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         JLabel label = new JLabel("Xeque-mate! Jogador " + winner + " venceu!");
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JOptionPane mensagem=new JOptionPane(panel,JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog=mensagem.createDialog(frame,"Fim de Jogo");
         panel.add(label);
         JButton menuButton = new JButton("Retornar ao Menu");
         menuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         menuButton.addActionListener(e -> {
+            dialog.dispose();
             frame.getContentPane().removeAll();
-            showMenu();
+            frame.dispose();
+            new TelaInicial().setVisible(true);
         });
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
         panel.add(menuButton);
-        JOptionPane.showMessageDialog(frame, panel, "Fim de Jogo", JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(frame, panel, "Fim de Jogo", JOptionPane.INFORMATION_MESSAGE);
+    dialog.setVisible(true);
     }
 }

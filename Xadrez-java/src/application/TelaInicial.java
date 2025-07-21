@@ -27,14 +27,21 @@ class Jpanelimagem extends JPanel {
 
 public class TelaInicial extends JFrame {
     public TelaInicial() {
-        setTitle("Tela Inicial - Xadrez");
+        showmenu();
+    }
+
+    public void showmenu() {
         setSize(400, 350);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().removeAll();
+        repaint();
+        revalidate();
+        setTitle("Tela Inicial - Xadrez");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         Jpanelimagem panel = new Jpanelimagem("/fundo.png");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
+        panel.setSize(400,350);
         JLabel titulo = new JLabel("Bem-vindo ao Jogo de Xadrez!");
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         titulo.setFont(new Font("Arial", Font.BOLD, 20));
@@ -44,8 +51,7 @@ public class TelaInicial extends JFrame {
         iniciarBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         iniciarBtn.setMaximumSize(new Dimension(200, 50));
         iniciarBtn.addActionListener((ActionEvent e) -> {
-            dispose();
-            new ChessGUI();
+            new ChessGUI(this);
         });
 
         JButton regrasBtn = new JButton("Regras");
@@ -81,8 +87,9 @@ public class TelaInicial extends JFrame {
         panel.add(Box.createVerticalGlue());
 
         add(panel);
+        repaint();
+        revalidate();
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new TelaInicial().setVisible(true);
